@@ -1,23 +1,29 @@
 fichier,date,description,montant,categorie
-facture1.jpg,,Invoice no: 12847181 Date of i...,6,
-facture10.jpg,"Oct. 10, 2023",IIVV UIUE Les Produits Diamanc...,43,
-facture18.jpg,,Invoice no: 19471831 Date of i...,40,
-facture19.jpg,"Oct. 19, 2023",Invoice acct 1N8CpQGmFzQxIIDx ...,7139,
-facture2.jpg,"Nov. 1, 2023","649097 $2624 USD due Nov. 1, 2...",2624,
-facture20.jpg,,Invoice no: 51109338 Date of i...,5,
-facture21.jpg,,Invoice no: 16273983 Date of i...,"744,60",
-facture22.jpg,,Invoice no: 89969473 Date of i...,"725,37",
-facture23.jpg,,Invoice no: 72128555 Date of i...,"665,76",
-facture24.jpg,,Invoice no: 11580833 Date of i...,4,
-facture25.jpg,,Invoice no: 74589240 Date of i...,11,
-facture26.jpg,,Invoice no: 81978187 Date of i...,"113,45",
-facture27.jpg,,Invoice no: 99314100 Date of i...,5,
-facture28.jpg,,Invoice no: 68688408 Date of i...,"82,97",
-facture29.jpg,,Invoice no: 13407985 Date of i...,4,
-facture3.jpg,"Oct. 3, 2023",Invoice acct 1N8CpQGmFzQxIIDx ...,84382,
-facture4.jpg,"Oct. 14, 2023",IIVV UIUE DYNAPLAS LTD. 380 PA...,1355,
-facture5.jpg,"Nov. 29, 2023",IIVV UIUE Bombardier Aerospace...,6,
-facture6.jpg,"Oct. 24, 2023",IIVV UIUE NSE-Automatech Inc. ...,78,
-facture7.jpg,"Oct. 20, 2023",IIVV UIUE AIAP 7321 Commercial...,9,
-facture8.jpg,"Oct. 23, 2023",IIVV UIUE Alsco Canada Corpora...,6,
-facture9.jpg,"Oct. 23, 2023",IIVV UIUE COLPITTS DESIGN 4190...,55,
+facture1.jpg,03/03/2012,Invoice no: 12847181 Date of issue: 03/03/2012 Sel...,"6236,77623,68",equipement_informatique
+facture10.jpg,"Oct. 10, 2023","IIVV UIUE Les Produits Diamancel Inc. 4345, boul. ...",8646,fournitures_techniques
+facture11.jpg,04/09/2014,Invoice no: 19471831 Date of issue: 04/09/2014 Sel...,"40677,81",autres_depenses
+facture12.jpg,"Oct. 19, 2023",Invoice acct 1N8CpQGmFzQxIIDx Invoice number 25766...,9963,fournitures_techniques
+facture13.jpg,04/13/2013,Invoice no: 51109338 Date of issue: 04/13/2013 Sel...,"5640,17564,02",equipement_informatique
+facture14.jpg,04/01/2017,Invoice no: 16273983 Date of issue: 04/01/2017 Sel...,"744,60",services_maintenance
+facture15.jpg,10/29/2016,Invoice no: 89969473 Date of issue: 10/29/2016 Sel...,"725,37",services_maintenance
+facture16.jpg,12/25/2013,Invoice no: 72128555 Date of issue: 12/25/2013 Sel...,"665,76",autres_depenses
+facture17.jpg,11/24/2019,Invoice no: 11580833 Date of issue: 11/24/2019 Sel...,"4671,23",equipement_informatique
+facture18.jpg,12/08/2013,Invoice no: 74589240 Date of issue: 12/08/2013 Sel...,"11794,44",autres_depenses
+facture19.jpg,01/17/2013,Invoice no: 81978187 Date of issue: 01/17/2013 Sel...,"113,45",services_maintenance
+facture2.jpg,"Nov. 1, 2023","649097 $2624 USD due Nov. 1, 2023 Page 1 of...",2624,autres_depenses
+facture20.jpg,06/25/2014,Invoice no: 99314100 Date of issue: 06/25/2014 Sel...,"5975,75",autres_depenses
+facture21.jpg,03/20/2016,Invoice no: 68688408 Date of issue: 03/20/2016 Sel...,"82,97",autres_depenses
+facture22.jpg,11/22/2013,Invoice no: 13407985 Date of issue: 11/22/2013 Sel...,"4963,41",autres_depenses
+facture23.pdf,04/01/2023,Factures retranscrites (OCR) FACTURE 1 The Nussbau...,346.00,services_maintenance
+facture24.pdf,"Sept. 6, 2023",FACTURE 2 Invoice Meld #233582 CLK ENGRAVING 24 Ga...,4061,fournitures_techniques
+facture26.pdf,"Sept. 9, 2023",FACTURE 3 Invoice Meld #214139 A.E. Blake Montreal...,7599,fournitures_techniques
+facture3.jpg,"Oct. 3, 2023",Invoice acct 1N8CpQGmFzQxIIDx Invoice number 97698...,6558,fournitures_techniques
+facture4.jpg,"Oct. 14, 2023",IIVV UIUE DYNAPLAS LTD. 380 PASSMORE AVE. SCARBORO...,2558,fournitures_techniques
+facture5.jpg,"Nov. 29, 2023","IIVV UIUE Bombardier Aerospace Plant 1800, boul Ma...",4711,fournitures_techniques
+facture6.jpg,"Oct. 24, 2023","IIVV UIUE NSE-Automatech Inc. 790, boul. Industrie...",8064,fournitures_techniques
+facture7.jpg,"Oct. 20, 2023",IIVV UIUE AIAP 7321 Commercial Blvd East Arlington...,8543,equipement_informatique
+facture8.jpg,"Oct. 23, 2023","IIVV UIUE Alsco Canada Corporation 2500, rue Senku...",6433,fournitures_techniques
+facture9.jpg,"Oct. 23, 2023",IIVV UIUE COLPITTS DESIGN 4190 Front Street GOODWO...,7918,fournitures_techniques
+vrai_pdf_fournitures.pdf,"May  18,  2026",INDUSTRIAL  SOLUTIONS  LTD  3M  Authorized  Distri...,,fournitures_techniques
+vrai_pdf_maintenance.pdf,"May  20,  2026",NUSSBAUM  ENTERPRISES  Facility  Management  &  Se...,,services_maintenance
+vrai_pdf_tech.pdf,"May  15,  2026","INVOICE  /  FACTURE  Abaxys  Tech,  LLC   Invoice ...",,equipement_informatique
