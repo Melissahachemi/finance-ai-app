@@ -1,22 +1,16 @@
 import pandas as pd
 import os
 
-# 1. Chemins des fichiers
-FICH_CLUSTER = "resultat_clustering.csv"
-FICH_ORIGINE = "depenses.csv"  # Ton fichier d'origine !
+csv_path = "resultat_clustering.csv"
 
-if not os.path.exists(FICH_CLUSTER):
-    print(f"❌ Erreur : Le fichier '{FICH_CLUSTER}' est introuvable. Lance 'python cluster_model.py' d'abord.")
-elif not os.path.exists(FICH_ORIGINE):
-    print(f"❌ Erreur : Le fichier d'origine '{FICH_ORIGINE}' est introuvable à la racine du projet.")
+if not os.path.exists(csv_path):
+    print(f"❌ Erreur : Le fichier '{csv_path}' n'existe pas. Lance d'abord l'OCR et le Clustering.")
 else:
-    # 2. Chargement des données
-    df_cluster = pd.read_csv(FICH_CLUSTER)
-    df_origine = pd.read_csv(FICH_ORIGINE)
+    df_cluster = pd.read_csv(csv_path)
 
-    # 3. Mapping (Traduction des numéros en vrais noms de catégories)
+    # Correspondance de tes 5 catégories
     dictionnaire_categories = {
-        0: "Autres & Divers",
+        0: "Vêtements & Autres",
         1: "Matériel Informatique",
         2: "Consoles & Jeux Vidéo",
         3: "Mobilier & Bureau",
@@ -24,42 +18,62 @@ else:
     }
     df_cluster['nom_categorie'] = df_cluster['cluster_id'].map(dictionnaire_categories)
 
-    # 4. Association avec les vrais montants du fichier d'origine
-    # On aligne les lignes ou on fusionne selon l'index pour récupérer la colonne 'montant'
-    if 'montant' in df_origine.columns:
-        df_cluster['montant'] = df_origine['montant']
-    else:
-        # Si la colonne s'appelle autrement (ex: 'prix' ou 'total'), on s'adapte
-        col_montant = [c for c in df_origine.columns if 'mont' in c.lower() or 'prix' in c.lower() or 'total' in c.lower()]
-        if col_montant:
-            df_cluster['montant'] = df_origine[col_montant[0]]
-        else:
-            # Sécurité au cas où la colonne montant n'est pas trouvée
-            print("⚠️ Colonne de montant introuvable dans depenses.csv, utilisation d'une valeur par défaut.")
-            df_cluster['montant'] = 100.0
+    # 🛠️ NETTOYAGE SÉCURITÉ : Si la TVA est aberrante (ex: numéro de facture confondu), 
+    # on applique par défaut un taux de 20% du TTC, très classique en gestion financière.
+    def corriger_tva(row):
+        ttc = row['montant_ttc']
+        tva = row['tva']
+        if tva > ttc or tva <= 0:
+            return round(ttc * 0.20, 2)  # Estimation à 20% par sécurité
+        return tva
 
-    # Nettoyage de la colonne montant (conversion en nombres si c'est du texte)
-    df_cluster['montant'] = pd.to_numeric(df_cluster['montant'].astype(str).str.replace(r'[^\d.]', '', regex=True), errors='coerce').fillna(0)
-
-    print("📊 --- LES VRAIS INSIGHTS DE COMPTABILITÉ (PANDAS) --- 📊\n")
-
-    # KPI 1 : Répartition du budget par catégorie
-    stats = df_cluster.groupby('nom_categorie')['montant'].agg(['sum', 'count'])
-    stats.columns = ['Montant Total (€)', 'Nombre de Factures']
-    stats = stats.sort_values(by='Montant Total (€)', ascending=False)
+    df_cluster['tva_propre'] = df_cluster.apply(corriger_tva, axis=1)
     
-    # Affichage propre
-    stats['Montant Total (€)'] = stats['Montant Total (€)'].apply(lambda x: f"{x:,.2f} €")
-    print(stats)
+    # Calcul du montant Hors Taxes (HT)
+    df_cluster['montant_ht'] = (df_cluster['montant_ttc'] - df_cluster['tva_propre']).round(2)
 
-    # KPI 2 : Total Général
-    total_general = df_cluster['montant'].sum()
-    print(f"\n💰 Dépense Totale Cumulée : {total_general:,.2f} €")
+    print("📊 =============================================================== 📊")
+    print("📈       AUDIT FINANCIER & INSIGHTS ANALYTIQUES         📈")
+    print("📊 =============================================================== 📊\n")
 
-    # KPI 3 : Pire catégorie
-    top_depense = df_cluster.groupby('nom_categorie')['montant'].sum().idxmax()
-    print(f"🚨 Alerte Budget : La catégorie la plus coûteuse est '{top_depense}'.")
+    # 1. Calcul des indicateurs poussés de gestion de trésorerie
+    insights = df_cluster.groupby('nom_categorie').agg(
+        Nb_Factures=('montant_ttc', 'count'),
+        Total_HT=('montant_ht', 'sum'),
+        Total_TVA=('tva_propre', 'sum'),
+        Total_TTC=('montant_ttc', 'sum'),
+        Achat_Moyen_TTC=('montant_ttc', 'mean'),
+        Facture_Max_TTC=('montant_ttc', 'max')
+    )
 
-    # 5. Sauvegarde du registre final enrichi
+    # 2. Calcul des parts du budget global (en %)
+    total_global_ttc = insights['Total_TTC'].sum()
+    insights['Part_Budget_(%)'] = ((insights['Total_TTC'] / total_global_ttc) * 100).round(2)
+
+    # Tri du tableau par le pôle qui coûte le plus cher
+    insights = insights.sort_values(by='Total_TTC', ascending=False)
+
+    # 3. Affichage propre de toutes les colonnes à l'écran (sans les "...")
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.width', 1000)
+
+    affichage = insights.copy()
+    for col in ['Total_HT', 'Total_TVA', 'Total_TTC', 'Achat_Moyen_TTC', 'Facture_Max_TTC']:
+        affichage[col] = affichage[col].apply(lambda x: f"{x:,.2f} €")
+    affichage['Part_Budget_(%)'] = affichage['Part_Budget_(%)'].apply(lambda x: f"{x} %")
+
+    print(affichage)
+    print("\n-------------------------------------------------------------------")
+    
+    # 4. Indicateurs clés de performance (KPIs) pour le tableau de bord
+    total_global_tva = insights['Total_TVA'].sum()
+    total_global_ht = insights['Total_HT'].sum()
+    
+    print(f"💰 VOLUME FINANCIER TOTAL : {total_global_ttc:,.2f} € TTC")
+    print(f"📉 TOTAL NET HORS TAXES   : {total_global_ht:,.2f} € HT")
+    print(f"🛡️ TVA À RÉCUPÉRER (20%)  : {total_global_tva:,.2f} €")
+    print(f"🚨 ALERT BUDGET DIRECTION : '{insights['Total_TTC'].idxmax()}' représente {insights['Part_Budget_(%)'].max()}% des dépenses globales.")
+
+    # Sauvegarde du registre complet enrichi pour ton API ou ton Chatbot
     df_cluster.to_csv("registre_depenses_final.csv", index=False)
-    print("\n💾 Le registre complet a été sauvegardé dans 'registre_depenses_final.csv'")
+    print("\n💾 Registre financier enrichi sauvegardé dans 'registre_depenses_final.csv'")
